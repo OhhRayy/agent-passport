@@ -129,7 +129,7 @@ would be needed.
 
 ## dApp
 
-Static site in `site/` (`index.html`, `app.js`, `config.js`) — no build step,
+Static site in `docs/` (`index.html`, `app.js`, `config.js`) — no build step,
 ethers v6 via CDN. Connect with any injected wallet (e.g. Binance Wallet),
 check your Agent ID, mint your passport, tip by name, and see the
 leaderboard (read from on-chain events via the public BSC RPC).
@@ -142,7 +142,7 @@ cd site && python3 -m http.server 8000   # then open http://localhost:8000
 
 Host on GitHub Pages (after deploy): Settings → Pages → Deploy from branch
 → `main` + `/site`. Then fill the deployed contract addresses and deploy
-blocks in `site/config.js` (they are placeholders until then — the UI shows
+blocks in `docs/config.js` (they are placeholders until then — the UI shows
 "kontrak belum di-deploy" while they are unset).
 
 ## Hackathon context
