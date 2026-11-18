@@ -127,13 +127,30 @@ The deployer wallet holds ~0.000427 BNB: that **covers** deployment at
 0.05 gwei (leaving ~0.000226 BNB), but at 1 gwei a top-up of ~0.0036 BNB
 would be needed.
 
+## dApp
+
+Static site in `site/` (`index.html`, `app.js`, `config.js`) — no build step,
+ethers v6 via CDN. Connect with any injected wallet (e.g. Binance Wallet),
+check your Agent ID, mint your passport, tip by name, and see the
+leaderboard (read from on-chain events via the public BSC RPC).
+
+Run locally:
+
+```bash
+cd site && python3 -m http.server 8000   # then open http://localhost:8000
+```
+
+Host on GitHub Pages (after deploy): Settings → Pages → Deploy from branch
+→ `main` + `/site`. Then fill the deployed contract addresses and deploy
+blocks in `site/config.js` (they are placeholders until then — the UI shows
+"kontrak belum di-deploy" while they are unset).
+
 ## Hackathon context
 
-Entry for the Binance Agent ID Hackathon. The project is live on BSC,
-uses Agent ID as its identity layer (every passport and every tip is
-resolved through the Agent ID registry), and is fully open-source under
-MIT. The dApp (static site) lives in a separate repo/directory and is
-merged here later.
+Entry for the Binance Agent ID Hackathon. The contracts are written, tested,
+and measured locally (deployment pending approval); the project uses Agent ID
+as its identity layer (every passport and every tip is resolved through the
+Agent ID registry) and is fully open-source under MIT.
 
 ## License
 

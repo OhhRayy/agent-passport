@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Agent Passport</title>
+<style>
+  :root { --accent:#f0b90b; --bg:#0f0f0f; --card:#1c1c1c; --text:#f5f5f5; --muted:#9a9a9a; --ok:#2ecc71; --err:#e74c3c; }
+  * { box-sizing:border-box; }
+  body { margin:0; font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif; background:var(--bg); color:var(--text); }
+  .wrap { max-width:640px; margin:0 auto; padding:16px; }
+  header { display:flex; justify-content:space-between; align-items:center; gap:12px; flex-wrap:wrap; }
+  h1 { font-size:22px; margin:8px 0 0; }
+  p.sub { color:var(--muted); margin:4px 0 0; font-size:14px; }
+  .card { background:var(--card); border-radius:12px; padding:16px; margin-top:16px; }
+  .card h2 { font-size:17px; margin:0 0 8px; }
+  .card p { font-size:14px; line-height:1.5; }
+  .muted { color:var(--muted); font-size:13px; }
+  .ok { color:var(--ok); }
+  .err { color:var(--err); }
+  button { background:var(--accent); color:#111; border:0; border-radius:8px; padding:11px 16px; font-size:15px; font-weight:600; cursor:pointer; width:100%; margin-top:8px; }
+  button:disabled { opacity:.45; cursor:not-allowed; }
+  button.secondary { background:#2c2c2c; color:var(--text); }
+  input { width:100%; padding:11px 12px; border-radius:8px; border:1px solid #3a3a3a; background:#111; color:var(--text); font-size:15px; margin-top:8px; }
+  label { font-size:13px; color:var(--muted); display:block; margin-top:10px; }
+  .row { display:flex; gap:8px; }
+  .row button { flex:1; }
+  .addr { font-family:monospace; word-break:break-all; }
+  .stat { display:flex; justify-content:space-between; padding:6px 0; border-bottom:1px solid #2a2a2a; font-size:14px; }
+  .stat:last-child { border-bottom:0; }
+  ul.list { list-style:none; padding:0; margin:8px 0 0; font-size:14px; }
+  ul.list li { padding:8px 0; border-bottom:1px solid #2a2a2a; line-height:1.45; }
+  ul.list li:last-child { border-bottom:0; }
+  .badge { display:inline-block; background:#2c2c2c; border-radius:6px; padding:2px 8px; font-size:12px; color:var(--muted); }
+  .hidden { display:none; }
+  .note { background:#262200; border:1px solid #6b5b00; border-radius:8px; padding:10px 12px; font-size:13px; margin-top:10px; line-height:1.5; }
+  footer { margin-top:24px; font-size:12px; color:var(--muted); text-align:center; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <div>
+      <h1>Agent Passport</h1>
+      <p class="sub">Paspor on-chain untuk Agent ID — mint sekali, kirim tip ke sesama agen.</p>
+    </div>
+  </header>
+
+  <!-- 1. Connect wallet -->
+  <div class="card">
+    <h2>Dompet</h2>
+    <p id="walletStatus" class="muted">Belum terhubung. Hubungkan dompet kamu untuk lanjut.</p>
+    <button id="connectBtn">Hubungkan Dompet</button>
+    <p id="chainStatus" class="muted hidden"></p>
+  </div>
+
+  <!-- 2. Agent ID status + Mint Passport -->
+  <div class="card hidden" id="passportCard">
+    <h2>Agent ID kamu</h2>
+    <p id="agentIdStatus" class="muted">Memeriksa…</p>
+
+    <div id="verifyBox" class="hidden">
+      <label for="labelInput">Nama Agent ID kamu (tanpa .ai)</label>
+      <input id="labelInput" type="text" placeholder="contoh: ohrayy" autocomplete="off" spellcheck="false">
+      <div class="row">
+        <button id="verifyBtn" class="secondary">Verifikasi Nama</button>
+      </div>
+      <p id="verifyResult" class="muted"></p>
+    </div>
+
+    <div id="mintBox" class="hidden">
+      <p class="ok" id="verifiedName"></p>
+      <button id="mintBtn">Mint Passport</button>
+      <p id="mintStatus" class="muted"></p>
+    </div>
+
+    <div id="myPassportBox" class="hidden">
+      <p class="ok">Kamu sudah punya Passport.</p>
+      <div class="stat"><span>Nama</span><strong id="myPassportName"></strong></div>
+      <div class="stat"><span>Tanggal mint</span><strong id="myPassportDate"></strong></div>
+    </div>
+
+    <div id="noAgentIdBox" class="hidden">
+      <p class="err">Alamat ini tidak punya Agent ID.</p>
+      <p class="muted">Agent ID hanya bisa diklaim di aplikasi Binance: buka Wallet, ketuk banner Agent ID, lalu klaim namamu. Setelah itu kembali ke sini untuk mint Passport.</p>
+    </div>
+
+    <div id="notDeployedPassport" class="hidden">
+      <p class="note">Kontrak Passport belum di-deploy — mint akan aktif setelah alamat kontrak diisi.</p>
+    </div>
+  </div>
+
+  <!-- 3. Tip -->
+  <div class="card">
+    <h2>Kirim Tip</h2>
+    <p class="muted">Kirim tip ke agen lain pakai nama Agent ID-nya. Nama yang kamu ketik hanya dipakai untuk mengirim pembayaran ini.</p>
+    <label for="tipNameInput">Nama Agent ID penerima</label>
+    <input id="tipNameInput" type="text" placeholder="contoh: ohrayy atau ohrayy.ai" autocomplete="off" spellcheck="false">
+    <label for="tipAmountInput">Jumlah (BNB) — minimum <span id="minTipLabel">0,0001</span></label>
+    <input id="tipAmountInput" type="number" step="0.0001" min="0.0001" placeholder="0.001">
+    <button id="previewTipBtn" class="secondary">Cek Penerima</button>
+    <div id="tipPreview" class="hidden">
+      <div class="stat"><span>Penerima</span><strong id="tipPreviewName"></strong></div>
+      <div class="stat"><span>Alamat</span><span class="addr" id="tipPreviewAddr"></span></div>
+      <p class="ok" id="tipPreviewOk">terverifikasi pegang Agent ID</p>
+      <button id="sendTipBtn">Kirim Tip</button>
+    </div>
+    <p id="tipStatus" class="muted"></p>
+  </div>
+
+  <!-- 4. Leaderboard -->
+  <div class="card">
+    <h2>Leaderboard</h2>
+    <div id="leaderboardEmpty" class="hidden">
+      <p class="muted">Leaderboard aktif setelah kontrak di-deploy.</p>
+    </div>
+    <div id="leaderboardBody" class="hidden">
+      <div class="stat"><span>Total pemegang Passport</span><strong id="statHolders">0</strong></div>
+      <div class="stat"><span>Total tip</span><strong id="statTipCount">0</strong></div>
+      <div class="stat"><span>Total BNB di-tip</span><strong id="statTipBnb">0</strong></div>
+      <h3 style="font-size:15px;margin:16px 0 4px;">Tip terbaru</h3>
+      <ul class="list" id="recentTips"></ul>
+      <h3 style="font-size:15px;margin:16px 0 4px;">Mint terbaru</h3>
+      <ul class="list" id="recentMints"></ul>
+    </div>
+    <button id="refreshBtn" class="secondary">Refresh</button>
+    <p id="leaderboardStatus" class="muted"></p>
+  </div>
+
+  <footer>Agent Passport — berjalan di BSC. Setiap transaksi dikonfirmasi di dompet kamu sendiri.</footer>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/ethers@6.13.4/dist/ethers.umd.min.js"></script>
+<script src="config.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
