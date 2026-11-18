@@ -1,7 +1,5 @@
 // Agent Passport — konfigurasi dApp
-// Semua alamat kontrak masih PLACEHOLDER sampai kontrak di-deploy.
-// Ganti nilai di bawah dengan alamat hasil deploy, lalu isi deployBlock.
-// Alamat placeholder 0x000...000 membuat UI menampilkan "kontrak belum di-deploy".
+// Kontrak sudah di-deploy di BSC mainnet 2026-11-18 (lihat alamat di bawah).
 
 const CONFIG = {
   chainId: 56, // BSC mainnet
@@ -10,14 +8,13 @@ const CONFIG = {
   // SPACE ID Agent ID (ERC-721), sudah live di BSC
   agentIdContract: "0x60b9262456de011f7d15a54cdd8c48baaa8b022f",
 
-  // Placeholder — isi setelah deploy
-  passportContract: "0x0000000000000000000000000000000000000000",
-  tipJarContract: "0x0000000000000000000000000000000000000000",
+  // Deployed 2026-11-18 (BSC mainnet)
+  passportContract: "0x278807630Cf4f4ac1725bd9Fd8E5D4AbeA7F588F",
+  tipJarContract: "0xBD39d75710CB91291f1AB42BbFA10D2dc1F1048E",
 
-  // Blok deploy kontrak (0 = belum di-deploy; isi setelah deploy agar
-  // eth_getLogs leaderboard hanya membaca dari blok yang relevan)
-  passportDeployBlock: 0,
-  tipJarDeployBlock: 0,
+  // Blok deploy kontrak
+  passportDeployBlock: 134325653,
+  tipJarDeployBlock: 134325980,
 
   // ABI minimal yang dipakai dApp
   agentIdAbi: [

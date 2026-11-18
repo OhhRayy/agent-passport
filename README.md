@@ -76,15 +76,15 @@ function anywhere, no fee parameter, and no burn function.
 
 ## Contract addresses
 
-> **TBD — NOT deployed yet.** Contracts are written, tested, and measured on
-> a local chain only. Addresses will be filled in here after the deployer
-> wallet is funded and deployment is approved.
+> **Deployed 2026-11-18 on BSC mainnet.** Owner of both contracts is Fahmi's
+> wallet `0xD6768Ff0aC2Acc72bF650283928c1f682217caBA` (Agent ID ohrayy.ai).
+> Both contracts are verified on Sourcify (exact_match).
 
-| Contract | BSC mainnet address |
-|---|---|
-| AgentPassport | TBD |
-| AgentTipJar | TBD |
-| Agent ID registry | `0x60B9262456dE011F7d15a54CdD8c48bAaa8B022F` |
+| Contract | BSC mainnet address | Deploy tx | Block |
+|---|---|---|---|
+| AgentPassport | `0x278807630Cf4f4ac1725bd9Fd8E5D4AbeA7F588F` | `0x7bcc331541c87e085a910c7ac787d1f3b40bdbcd026b47594ef77b6a98a1ea4f` | 134325653 |
+| AgentTipJar | `0xBD39d75710CB91291f1AB42BbFA10D2dc1F1048E` | `0xb6d5b11a35bd2fe565371e40e48547e8d95e76f9f16dd14dd11dc8ba96950871` | 134325980 |
+| Agent ID registry | `0x60B9262456dE011F7d15a54CdD8c48bAaa8B022F` | — | — |
 
 ## Tests
 
