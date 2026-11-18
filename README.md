@@ -137,20 +137,20 @@ leaderboard (read from on-chain events via the public BSC RPC).
 Run locally:
 
 ```bash
-cd site && python3 -m http.server 8000   # then open http://localhost:8000
+cd docs && python3 -m http.server 8000   # then open http://localhost:8000
 ```
 
-Host on GitHub Pages (after deploy): Settings → Pages → Deploy from branch
-→ `main` + `/site`. Then fill the deployed contract addresses and deploy
-blocks in `docs/config.js` (they are placeholders until then — the UI shows
-"kontrak belum di-deploy" while they are unset).
+Hosted on GitHub Pages (Deploy from branch → `main` + `/docs`):
+https://ohhrayy.github.io/agent-passport/ — contract addresses and deploy
+blocks are filled in `docs/config.js`.
 
 ## Hackathon context
 
-Entry for the Binance Agent ID Hackathon. The contracts are written, tested,
-and measured locally (deployment pending approval); the project uses Agent ID
-as its identity layer (every passport and every tip is resolved through the
-Agent ID registry) and is fully open-source under MIT.
+Entry for the Binance Agent ID Hackathon. The contracts are deployed on BSC
+mainnet (see Contract addresses above) and verified on Sourcify
+(exact_match); the project uses Agent ID as its identity layer (every
+passport and every tip is resolved through the Agent ID registry) and is
+fully open-source under MIT.
 
 ## License
 
